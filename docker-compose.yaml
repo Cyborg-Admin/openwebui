@@ -12,12 +12,16 @@ services:
     environment:
       # Required: set a long random string in Coolify / .env
       - WEBUI_SECRET_KEY=${WEBUI_SECRET_KEY}
-      # External Ollama (e.g. Cortex at 10.0.0.1)
+      # External Ollama (Cortex). BASE_URLS is what the UI connections list uses.
       - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:-http://10.0.0.1:11434}
-      # Optional: OpenAI-compatible APIs (OpenAI, Groq, LiteLLM, etc.)
+      - OLLAMA_BASE_URLS=${OLLAMA_BASE_URLS:-http://10.0.0.1:11434}
+      # Keep Coolify env authoritative (DB otherwise keeps old http://ollama:11434)
+      - ENABLE_PERSISTENT_CONFIG=${ENABLE_PERSISTENT_CONFIG:-False}
+      - RESET_CONFIG_ON_START=${RESET_CONFIG_ON_START:-True}
+      # Disable OpenAI provider unless a key/base URL is set
+      - ENABLE_OPENAI_API=${ENABLE_OPENAI_API:-False}
       - OPENAI_API_KEY=${OPENAI_API_KEY:-}
       - OPENAI_API_BASE_URL=${OPENAI_API_BASE_URL:-}
-      # First account created becomes admin
       - WEBUI_AUTH=${WEBUI_AUTH:-True}
       - ENABLE_SIGNUP=${ENABLE_SIGNUP:-True}
 
