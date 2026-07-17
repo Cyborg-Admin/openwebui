@@ -1,15 +1,14 @@
 # Open WebUI (Coolify)
 
-Docker Compose stack for [Open WebUI](https://github.com/open-webui/open-webui) + [Ollama](https://ollama.com), ready to deploy on [Coolify](https://coolify.io).
+Docker Compose stack for [Open WebUI](https://github.com/open-webui/open-webui), ready to deploy on [Coolify](https://coolify.io). It talks to an existing [Ollama](https://ollama.com) host (e.g. Cortex at `http://10.0.0.1:11434`).
 
 ## What’s included
 
 | Service     | Image                                      | Port |
 |------------|---------------------------------------------|------|
 | open-webui | `ghcr.io/open-webui/open-webui:main`        | 8080 |
-| ollama     | `ollama/ollama:latest`                      | 11434 (internal) |
 
-Data is stored in named Docker volumes (`open-webui-data`, `ollama-data`).
+Data is stored in the named Docker volume `open-webui-data`. Models live on your external Ollama.
 
 ## Deploy on Coolify
 
@@ -25,19 +24,14 @@ Data is stored in named Docker volumes (`open-webui-data`, `ollama-data`).
 | Variable           | Notes                                      |
 |--------------------|--------------------------------------------|
 | `WEBUI_SECRET_KEY` | Long random string (e.g. `openssl rand -hex 32`) |
+| `OLLAMA_BASE_URL`  | Existing Ollama API, e.g. `http://10.0.0.1:11434` |
 
 Optional: `OPENAI_API_KEY`, `OPENAI_API_BASE_URL` for cloud/compatible APIs.
 
 ### After first deploy
 
 1. Open your domain and create the first admin account.
-2. Pull a model into Ollama (from the Coolify server / container terminal):
-
-```bash
-docker exec -it ollama ollama pull llama3.2
-```
-
-3. In Open WebUI, select the model and chat.
+2. Models from your Cortex/Ollama host should appear in the model picker.
 
 ## Local test (optional)
 
