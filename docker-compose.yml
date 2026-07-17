@@ -1,0 +1,41 @@
+services:
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - open-webui-data:/app/backend/data
+    environment:
+      # Required: set a long random string in Coolify / .env
+      - WEBUI_SECRET_KEY=${WEBUI_SECRET_KEY}
+      # Local Ollama (same compose stack)
+      - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:-http://ollama:11434}
+      # Optional: OpenAI-compatible APIs (OpenAI, Groq, LiteLLM, etc.)
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - OPENAI_API_BASE_URL=${OPENAI_API_BASE_URL:-}
+      # First account created becomes admin
+      - WEBUI_AUTH=${WEBUI_AUTH:-True}
+      - ENABLE_SIGNUP=${ENABLE_SIGNUP:-True}
+    depends_on:
+      - ollama
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: unless-stopped
+    volumes:
+      - ollama-data:/root/.ollama
+    # Uncomment if you need GPU on NVIDIA hosts:
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+
+volumes:
+  open-webui-data:
+  ollama-data:

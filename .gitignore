@@ -1,0 +1,8 @@
+.env
+.env.local
+*.pem
+*.key
+.DS_Store
+Thumbs.db
+data/
+*.log
