@@ -17,8 +17,8 @@ Data is stored in named Docker volumes (`open-webui-data`, `ollama-data`).
 2. In Coolify: **Project → + Add Resource → Docker Compose** (from Git).
 3. Connect the GitHub repo and select `docker-compose.yml`.
 4. Set environment variables (at least `WEBUI_SECRET_KEY`).
-5. Assign a domain / FQDN to the **open-webui** service (port **8080**).
-6. Deploy.
+5. Assign a domain to the **open-webui** service as `https://your-domain:8080` (container port).
+6. Deploy. Do **not** publish host port `8080` in compose — Coolify’s proxy handles HTTPS.
 
 ### Required env vars
 
@@ -44,6 +44,7 @@ docker exec -it ollama ollama pull llama3.2
 ```bash
 cp .env.example .env
 # edit WEBUI_SECRET_KEY
+# temporarily add under open-webui: ports: ["8080:8080"]
 docker compose up -d
 ```
 
